@@ -1,0 +1,126 @@
+using System; // import przestrzeni nazw
+using System.Collections.Generic;
+
+public class Kurs // deklaracja klasy kurs
+{
+    public string Nazwa { get; set; } // deklaracja kilku właściwości tej klasy
+    public DateTime DataRozpoczecia { get; set; }
+    public int CzasTrwaniaWDniach { get; set; }
+    public string Opis { get; set; }
+}
+
+public class Uczestnik // deklaracja klasy uczestnik
+{
+    public string Imie { get; set; } // deklaracja kilku właściwości tej klasy
+    public string Nazwisko { get; set; }
+    public string Adres { get; set; }
+}
+
+public class KontrolerSzkolen // deklaracja klasy kontroler szkoleń
+{
+    private List<Kurs> kursy; // deklaracja prywatnych właściwości
+    private List<Uczestnik> uczestnicy;
+
+    public KontrolerSzkolen() //konstruktor klasy
+    {
+        kursy = new List<Kurs>(); //inicjalizacja list jako instancji
+        uczestnicy = new List<Uczestnik>();
+    }
+
+    public void DodajKurs(Kurs kurs) // metoda kurs dodająca obiekt klasy kurs do listy
+    {
+        kursy.Add(kurs); //dodaje do listy kursy
+    }
+
+    public void DodajUczestnika(Uczestnik uczestnik) // metoda dodająca obiekt klasy uczestnicy do listy
+    {
+        uczestnicy.Add(uczestnik);  //dodaje do listy uczestnicy
+    }
+
+    //funkcja pierwsza
+    public void WyswietlKursy()
+    {
+        foreach (var kurs in kursy) //petla iteracyjna przejscie po kursach
+        {//wyświetlenie informacji o kursie
+            Console.WriteLine($"Nazwa: {kurs.Nazwa}, Data Rozpoczecia: {kurs.DataRozpoczecia.ToShortDateString()}, Czas Trwania: {kurs.CzasTrwaniaWDniach} dni");
+            Console.WriteLine($"Opis: {kurs.Opis}");
+            Console.WriteLine();
+        }
+    }
+
+    //funkcja druga
+    public void WyswietlUczestnikow()
+    {
+        foreach (var uczestnik in uczestnicy) //petla iteracyjna przejscie po uczestnikach
+        {//wyświetlenie informacji o uczestniku
+            Console.WriteLine($"Imie: {uczestnik.Imie} {uczestnik.Nazwisko}, Adres: {uczestnik.Adres}");
+        }
+    }
+
+    //konsolka startowa z do zarzadzania
+    public void KonsolaUI()
+    {//wyświetla menu
+        Console.WriteLine("System Zarzadzania Programem Szkoleniowym!");
+        Console.WriteLine("1. Dodaj Kurs");
+        Console.WriteLine("2. Dodaj Uczestnika");
+        Console.WriteLine("3. Wyswietl Kursy");
+        Console.WriteLine("4. Wyswietl Uczestnikow");
+        Console.WriteLine("5. Wyjscie");
+
+        bool wyjscie = false;//ewentualne wyjście
+        while (!wyjscie)//wykonuje pętle while jesli użytkownik nie wychodzi
+        {
+            Console.Write("Wybierz opcje: "); //możliwość wybrania opcji przez user'a
+            string wybor = Console.ReadLine(); //odczyt
+            switch (wybor) //ewentualny wybór
+            {
+                case "1": //rozpatrywanie opcji dodawania kursu
+                    Console.WriteLine("> DODAWANIE KURSU <");
+                    Console.Write("Nazwa: ");
+                    string nazwa = Console.ReadLine();
+                    Console.Write("Data Rozpoczecia (rrrr-mm-dd): ");
+                    DateTime dataRozpoczecia = DateTime.Parse(Console.ReadLine());
+                    Console.Write("Czas Trwania (zapis w dniach): ");
+                    int czasTrwania = int.Parse(Console.ReadLine());
+                    Console.Write("Opis: ");
+                    string opis = Console.ReadLine();
+                    DodajKurs(new Kurs { Nazwa = nazwa, DataRozpoczecia = dataRozpoczecia, CzasTrwaniaWDniach = czasTrwania, Opis = opis });
+                    break;
+                case "2"://rozpatrywanie opcji dodawania uczestnika
+                    Console.WriteLine("> DODAWANIE UCZESTNIKA <");
+                    Console.Write("Imie: ");
+                    string imie = Console.ReadLine();
+                    Console.Write("Nazwisko: ");
+                    string nazwisko = Console.ReadLine();
+                    Console.Write("Adres: ");
+                    string adres = Console.ReadLine();
+                    DodajUczestnika(new Uczestnik { Imie = imie, Nazwisko = nazwisko, Adres = adres });
+                    break;
+                case "3"://rozpatrywanie opcji wyswietlania listy kursow
+                    Console.WriteLine("> LISTA KURSOW <");
+                    WyswietlKursy();
+                    break;
+                case "4"://rozpatrywanie opcji wyswietlania listy uczestnikow
+                    Console.WriteLine("> LISTA UCZESTNIKOW <");
+                    WyswietlUczestnikow();
+                    break;
+                case "5"://rozpatrywanie opcji wyjscia realizowanego
+                    wyjscie = true;
+                    break;
+                default:
+                    Console.WriteLine("Sprobuj ponownie.");
+                    break;
+            }
+        }
+    }
+}
+
+//główne odpalenie programu
+class Program
+{
+    static void Main(string[] args)
+    {
+        KontrolerSzkolen kontroler = new KontrolerSzkolen();
+        kontroler.KonsolaUI();
+    }
+}
